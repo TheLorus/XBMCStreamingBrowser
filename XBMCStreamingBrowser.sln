@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XBMCStreamingBrowser", "XBMCStreamingBrowser\XBMCStreamingBrowser.csproj", "{B5B25EC4-7BE0-4A54-BE71-C45DE9012F0A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C9181588-4775-42B2-A35D-ACBC4B38CDBA} = {C9181588-4775-42B2-A35D-ACBC4B38CDBA}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XBMCStreamingBrowser.Plugin.Generic", "XBMCStreamingBrowser.Plugin.Generic\XBMCStreamingBrowser.Plugin.Generic.csproj", "{2271E7E6-A621-4A5E-B5AB-4DC6DDD38346}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XBMCStreamingBrowser.Plugin.Streamcloud", "XBMCStreamingBrowser.Plugin.Streamcloud\XBMCStreamingBrowser.Plugin.Streamcloud.csproj", "{C9181588-4775-42B2-A35D-ACBC4B38CDBA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B5B25EC4-7BE0-4A54-BE71-C45DE9012F0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5B25EC4-7BE0-4A54-BE71-C45DE9012F0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5B25EC4-7BE0-4A54-BE71-C45DE9012F0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5B25EC4-7BE0-4A54-BE71-C45DE9012F0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2271E7E6-A621-4A5E-B5AB-4DC6DDD38346}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2271E7E6-A621-4A5E-B5AB-4DC6DDD38346}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2271E7E6-A621-4A5E-B5AB-4DC6DDD38346}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2271E7E6-A621-4A5E-B5AB-4DC6DDD38346}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9181588-4775-42B2-A35D-ACBC4B38CDBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9181588-4775-42B2-A35D-ACBC4B38CDBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9181588-4775-42B2-A35D-ACBC4B38CDBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9181588-4775-42B2-A35D-ACBC4B38CDBA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
