@@ -32,8 +32,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.MirrorBox = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.LabelSeason = new System.Windows.Forms.Label();
+            this.LabelEpisode = new System.Windows.Forms.Label();
             this.BoxSeason = new System.Windows.Forms.ComboBox();
             this.BoxEpisode = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
@@ -75,25 +75,25 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Mirror";
             // 
-            // label3
+            // LabelSeason
             // 
-            this.label3.AutoSize = true;
-            this.label3.Enabled = false;
-            this.label3.Location = new System.Drawing.Point(15, 9);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(43, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Season";
+            this.LabelSeason.AutoSize = true;
+            this.LabelSeason.Enabled = false;
+            this.LabelSeason.Location = new System.Drawing.Point(15, 9);
+            this.LabelSeason.Name = "LabelSeason";
+            this.LabelSeason.Size = new System.Drawing.Size(43, 13);
+            this.LabelSeason.TabIndex = 4;
+            this.LabelSeason.Text = "Season";
             // 
-            // label4
+            // LabelEpisode
             // 
-            this.label4.AutoSize = true;
-            this.label4.Enabled = false;
-            this.label4.Location = new System.Drawing.Point(151, 9);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(45, 13);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "Episode";
+            this.LabelEpisode.AutoSize = true;
+            this.LabelEpisode.Enabled = false;
+            this.LabelEpisode.Location = new System.Drawing.Point(151, 9);
+            this.LabelEpisode.Name = "LabelEpisode";
+            this.LabelEpisode.Size = new System.Drawing.Size(45, 13);
+            this.LabelEpisode.TabIndex = 5;
+            this.LabelEpisode.Text = "Episode";
             // 
             // BoxSeason
             // 
@@ -104,6 +104,7 @@
             this.BoxSeason.Name = "BoxSeason";
             this.BoxSeason.Size = new System.Drawing.Size(115, 21);
             this.BoxSeason.TabIndex = 6;
+            this.BoxSeason.SelectedIndexChanged += new System.EventHandler(this.BoxSeason_SelectedIndexChanged);
             // 
             // BoxEpisode
             // 
@@ -122,8 +123,8 @@
             this.ClientSize = new System.Drawing.Size(286, 108);
             this.Controls.Add(this.BoxEpisode);
             this.Controls.Add(this.BoxSeason);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.LabelEpisode);
+            this.Controls.Add(this.LabelSeason);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.MirrorBox);
             this.Controls.Add(this.label1);
@@ -141,8 +142,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox MirrorBox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label LabelSeason;
+        private System.Windows.Forms.Label LabelEpisode;
         private System.Windows.Forms.ComboBox BoxSeason;
         private System.Windows.Forms.ComboBox BoxEpisode;
     }

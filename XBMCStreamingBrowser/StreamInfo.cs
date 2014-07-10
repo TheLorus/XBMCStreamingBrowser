@@ -18,7 +18,7 @@ namespace XBMCStreamingBrowser
         private string _url = "";
         private List<KeyValuePair<int, int>> _seasons = new List<KeyValuePair<int, int>>();
         private List<Hoster> _hosterList = new List<Hoster>();
-        private string _seriesId = "";
+        private string _seriesUrl = "";
         WebClient wc = new WebClient();
 
         public StreamInfo(string url)
@@ -26,7 +26,18 @@ namespace XBMCStreamingBrowser
             InitializeComponent();
             _url = url;
 
-            getSeasonList();
+            _seasons = getSeasonList();
+            if (_seasons != null)
+            {
+                BoxSeason.Enabled = true;
+                LabelSeason.Enabled = true;
+                foreach (KeyValuePair<int, int> season in _seasons)
+                {
+                    BoxSeason.Items.Add(season.Key.ToString());
+                }
+
+                BoxSeason.SelectedIndex = 0;
+            }
 
             var resp = wc.DownloadString(url);
 
@@ -68,18 +79,16 @@ namespace XBMCStreamingBrowser
             }
             else
             {
-                _seriesId = matchResults.Groups[1].Value;
+                _seriesUrl = matchResults.Groups[1].Value;
 
-                Regex regexObj2 = new Regex(@"<option value=""(.*?)"" rel="".*?,(.*?)"".*?</option>", RegexOptions.Singleline);
+                Regex regexObj2 = new Regex(@"<option value=""(.*?)"" rel="".*?,(.*?)"".*?</option>", RegexOptions.Compiled);
                 Match matchResults2 = regexObj2.Match(resp);
 
-                while (matchResults2.Success)
+                foreach (Match match in regexObj2.Matches(resp))
                 {
-                    string[] last = matchResults2.Groups[2].Value.Split(',');
+                    string[] last = match.Groups[2].Value.Split(',');
                     int ilast = int.Parse(last[last.Length - 1]);
-                    list.Add(new KeyValuePair<int,int>(int.Parse(matchResults2.Groups[1].Value), ilast));
-                    matchResults2 = matchResults2.NextMatch();
-                    int test = 1;
+                    list.Add(new KeyValuePair<int,int>(int.Parse(match.Groups[1].Value), ilast));
                 }
                 return list;
 
@@ -100,6 +109,20 @@ namespace XBMCStreamingBrowser
             var random = new Random();
             int rnd = random.Next(0, MirrorBox.Items.Count - 1);
             MirrorBox.SelectedIndex = rnd;
+        }
+
+        private void BoxSeason_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BoxEpisode.Enabled = true;
+            LabelEpisode.Enabled = true;
+            BoxEpisode.Items.Clear();
+            int season = int.Parse(BoxSeason.SelectedItem.ToString());
+            int max = _seasons[season-1].Value;
+            for (int i = 1; i <= max; i++)
+            {
+                BoxEpisode.Items.Add(i);
+            }
+            BoxEpisode.SelectedIndex = 0;
         }
     }
 }
