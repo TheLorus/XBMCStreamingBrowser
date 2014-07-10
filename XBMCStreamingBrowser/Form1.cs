@@ -33,9 +33,9 @@ namespace XBMCStreamingBrowser
         {
             InitializeComponent();
             PluginHandler.Initialize();
-            listBox1.AutoSize = true;
         }
 
+        /*
         private void button1_Click(object sender, EventArgs e)
         {
             var resolved = PluginHandler.Resolve(textBox1.Text);
@@ -48,7 +48,8 @@ namespace XBMCStreamingBrowser
                 MessageBox.Show("Kein Plugin gefunden");
             }
         }
-
+        */
+ 
         private static string ToLiteral(string input)
         {
             using (var writer = new StringWriter())
@@ -79,39 +80,7 @@ namespace XBMCStreamingBrowser
 
         }
 
-        private void listBox1_Click(object sender, EventArgs e)
-        {
-            textBox2.Text = listBox1.SelectedItem.ToString();
-            listBox1.Hide();
-        }
-
         private void textBox2_KeyUp(object sender, KeyEventArgs e)
-        {
-            WebClient wc = new WebClient();
-            string url = String.Format("http://kinox.to/aGET/Suggestions/?q={0}&limit=10?q=hang&limit=10", textBox2.Text);
-            var resp = wc.DownloadString(url);
-            string[] suggestions = resp.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
-            listBox1.Items.Clear();
-            foreach (var sug in suggestions)
-            {
-                if (!String.IsNullOrEmpty(sug))
-                {
-                    listBox1.Items.Add(sug);
-                }
-            }
-
-            if (listBox1.Items.Count > 0)
-            {
-                listBox1.Show();
-            }
-            else
-            {
-                listBox1.Hide();
-            }
-
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
@@ -138,7 +107,7 @@ namespace XBMCStreamingBrowser
 
             try
             {
-                Regex regexObj = new Regex(@"<td class=""Icon""><img width=""16"" height=""11"" src=""/gr/sys/lng/(\d+).png"" alt=""language""></td>.*?title=""([^""]+)"".*?<td class=""Title"">.*?<a href=""(.*?)"">(.*?)</a>.*?class=""Year"">(.*?)</span>", RegexOptions.Singleline);
+                Regex regexObj = new Regex(@"<td class=""Icon""><img width=""16"" height=""11"" src=""/gr/sys/lng/(\d+).png"" alt=""language""></td>.*?title=""([^""]+)"".*?<td class=""Title"">.*?<a href=""(.*?)"".*?>(.*?)</a>.*?class=""Year"">(.*?)</span>", RegexOptions.Singleline);
                 Match matchResults = regexObj.Match(resp);
                 while (matchResults.Success)
                 {
@@ -150,7 +119,12 @@ namespace XBMCStreamingBrowser
                     */
                     if (matchResults.Groups[1].Value == "1" || matchResults.Groups[1].Value == "15")
                     {
-                        d.Rows.Add(matchResults.Groups[1].Value, matchResults.Groups[2].Value, matchResults.Groups[3].Value, matchResults.Groups[4].Value, matchResults.Groups[5].Value);
+                        byte[] bytes = Encoding.Default.GetBytes(matchResults.Groups[4].Value);
+                        var title = Encoding.UTF8.GetString(bytes);
+
+                        string resultUrl = "http://www.kinox.to"+matchResults.Groups[3].Value.ToString();
+
+                        d.Rows.Add(matchResults.Groups[1].Value, matchResults.Groups[2].Value, resultUrl, matchResults.Groups[4].Value, matchResults.Groups[5].Value);
                     }
 
                        
@@ -178,8 +152,19 @@ namespace XBMCStreamingBrowser
 
         private void button2_Click(object sender, EventArgs e)
         {
-            dataGridView1.DataSource = GetSearchResult(textBox2.Text);
-            dataGridView1.Columns[2].Visible = false;
+            searchResult.DataSource = GetSearchResult(searchInput.Text);
+            searchResult.Columns["language"].Visible = false;
+            searchResult.Columns["type"].Visible = false;
+            searchResult.Columns["url"].Visible = false;
+            searchResult.Columns["title"].Width = 260;
+            searchResult.Columns["year"].Width = 62;
+        }
+
+        private void ButtonSelect_Click(object sender, EventArgs e)
+        {
+            string url = searchResult.SelectedRows[0].Cells["url"].Value.ToString();
+            StreamInfo info = new StreamInfo(url);
+            info.ShowDialog();
         }
 
     }
