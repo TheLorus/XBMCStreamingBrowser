@@ -26,6 +26,8 @@ namespace XBMCStreamingBrowser
             InitializeComponent();
             _url = url;
 
+            getSeasonList();
+
             var resp = wc.DownloadString(url);
 
             Regex regexObj = new Regex(@"<li id=""Hoster_(.*?)"".*?class=""Named"">(.*?)</div>.*?<b>Mirror</b>:.*?/(.*?)<br />", RegexOptions.Singleline);
@@ -67,15 +69,17 @@ namespace XBMCStreamingBrowser
             else
             {
                 _seriesId = matchResults.Groups[1].Value;
-                resp = wc.DownloadString(_url);
 
-                Regex regexObj2 = new Regex(@"<option value=""(.*?) rel="".*,(.*?)""", RegexOptions.Singleline);
-                matchResults = regexObj2.Match(resp);
+                Regex regexObj2 = new Regex(@"<option value=""(.*?)"" rel="".*?,(.*?)"".*?</option>", RegexOptions.Singleline);
+                Match matchResults2 = regexObj2.Match(resp);
 
-                while (matchResults.Success)
+                while (matchResults2.Success)
                 {
-                    list.Add(new KeyValuePair<int,int>(int.Parse(matchResults.Groups[1].Value), int.Parse(matchResults.Groups[1].Value)));
-                    matchResults = matchResults.NextMatch();
+                    string[] last = matchResults2.Groups[2].Value.Split(',');
+                    int ilast = int.Parse(last[last.Length - 1]);
+                    list.Add(new KeyValuePair<int,int>(int.Parse(matchResults2.Groups[1].Value), ilast));
+                    matchResults2 = matchResults2.NextMatch();
+                    int test = 1;
                 }
                 return list;
 
