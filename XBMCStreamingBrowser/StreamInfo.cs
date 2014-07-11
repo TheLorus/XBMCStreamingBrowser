@@ -19,24 +19,43 @@ namespace XBMCStreamingBrowser
         private List<KeyValuePair<int, int>> _seasons = new List<KeyValuePair<int, int>>();
         private List<Hoster> _hosterList = new List<Hoster>();
         private string _seriesUrl = "";
+        private string _mainString;
         WebClient wc = new WebClient();
 
         public StreamInfo(string url)
         {
             InitializeComponent();
+
+            Regex regexObj = new Regex(@"http://www.kinox.to/Stream/(.*?).html", RegexOptions.Singleline);
+            Match matchResults = regexObj.Match(url);
+            _mainString = matchResults.Groups[1].Value;
+            setMirror(url);
+        }
+
+        private void setMirrorByEpisode(string season, string episode)
+        {
+            string url = String.Format("http://kinox.to/aGET/MirrorByEpisode/{0}&Season={1}&Episode={2}", _seriesUrl, season, episode);
+            setMirror(url, true);
+        }
+
+        private void setMirror(string url, bool isSeries=false)
+        {
             _url = url;
 
-            _seasons = getSeasonList();
-            if (_seasons != null)
+            if (_seasons.Count == 0)
             {
-                BoxSeason.Enabled = true;
-                LabelSeason.Enabled = true;
-                foreach (KeyValuePair<int, int> season in _seasons)
+                _seasons = getSeasonList();
+                if (_seasons != null)
                 {
-                    BoxSeason.Items.Add(season.Key.ToString());
-                }
+                    BoxSeason.Enabled = true;
+                    LabelSeason.Enabled = true;
+                    foreach (KeyValuePair<int, int> season in _seasons)
+                    {
+                        BoxSeason.Items.Add(season.Key.ToString());
+                    }
 
-                BoxSeason.SelectedIndex = 0;
+                    BoxSeason.SelectedIndex = 0;
+                }
             }
 
             var resp = wc.DownloadString(url);
@@ -60,7 +79,6 @@ namespace XBMCStreamingBrowser
 
             HosterBox.DataSource = hosterList;
             HosterBox.DisplayMember = "name";
-
         }
 
         private List<KeyValuePair<int, int>> getSeasonList()
@@ -123,6 +141,13 @@ namespace XBMCStreamingBrowser
                 BoxEpisode.Items.Add(i);
             }
             BoxEpisode.SelectedIndex = 0;
+
+            setMirrorByEpisode(BoxSeason.SelectedItem.ToString(), BoxEpisode.SelectedItem.ToString());
+        }
+
+        private void BoxEpisode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setMirrorByEpisode(BoxSeason.SelectedItem.ToString(), BoxEpisode.SelectedItem.ToString());
         }
     }
 }

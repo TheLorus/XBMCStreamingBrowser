@@ -115,6 +115,7 @@
             this.BoxEpisode.Name = "BoxEpisode";
             this.BoxEpisode.Size = new System.Drawing.Size(121, 21);
             this.BoxEpisode.TabIndex = 7;
+            this.BoxEpisode.SelectedIndexChanged += new System.EventHandler(this.BoxEpisode_SelectedIndexChanged);
             // 
             // StreamInfo
             // 
